@@ -27,7 +27,7 @@ contract RPSLP {
     function input(uint choice) public  {
         require(numPlayer == 2);
         require(player_not_played[msg.sender]);
-        require(choice == 0 || choice == 1 || choice == 2);
+        require(choice == 0 || choice == 1 || choice == 2 || choice == 3 || choice == 4);
         player_choice[msg.sender] = choice;
         player_not_played[msg.sender] = false;
         numInput++;
