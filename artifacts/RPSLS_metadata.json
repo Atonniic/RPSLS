@@ -6,7 +6,13 @@
 	"output": {
 		"abi": [
 			{
-				"inputs": [],
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "_commitContract",
+						"type": "address"
+					}
+				],
 				"stateMutability": "nonpayable",
 				"type": "constructor"
 			},
@@ -15,6 +21,45 @@
 				"name": "addPlayer",
 				"outputs": [],
 				"stateMutability": "payable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "bytes32",
+						"name": "dataHash",
+						"type": "bytes32"
+					}
+				],
+				"name": "commit",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "commitContract",
+				"outputs": [
+					{
+						"internalType": "contract CommitReveal",
+						"name": "",
+						"type": "address"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "delayTime",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
 				"type": "function"
 			},
 			{
@@ -31,16 +76,29 @@
 				"type": "function"
 			},
 			{
-				"inputs": [
+				"inputs": [],
+				"name": "isTimeout",
+				"outputs": [
+					{
+						"internalType": "bool",
+						"name": "",
+						"type": "bool"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "latestActionTime",
+				"outputs": [
 					{
 						"internalType": "uint256",
-						"name": "choice",
+						"name": "",
 						"type": "uint256"
 					}
 				],
-				"name": "input",
-				"outputs": [],
-				"stateMutability": "nonpayable",
+				"stateMutability": "view",
 				"type": "function"
 			},
 			{
@@ -134,6 +192,24 @@
 				"type": "function"
 			},
 			{
+				"inputs": [
+					{
+						"internalType": "string",
+						"name": "randomSalt",
+						"type": "string"
+					},
+					{
+						"internalType": "uint256",
+						"name": "choice",
+						"type": "uint256"
+					}
+				],
+				"name": "reveal",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
 				"inputs": [],
 				"name": "reward",
 				"outputs": [
@@ -160,7 +236,7 @@
 	},
 	"settings": {
 		"compilationTarget": {
-			"RPSLS.sol": "RPSLP"
+			"RPSLS.sol": "RPSLS"
 		},
 		"evmVersion": "cancun",
 		"libraries": {},
@@ -174,20 +250,28 @@
 		"remappings": []
 	},
 	"sources": {
-		"RPSLS.sol": {
-			"keccak256": "0x1ac33936bda76ddc25fe6f6b7d13df599678666187584b51b3f54a8276b28374",
+		"CommitReveal.sol": {
+			"keccak256": "0x6d742bd6d3bf5d76710186386b55cfa32036b6f21ec5eae9269bacced35ee89f",
 			"license": "GPL-3.0",
 			"urls": [
-				"bzz-raw://84a6f19f87f5c131051ac2f753290a38eb4b9d7f41b71b12c04ddaa770ecd082",
-				"dweb:/ipfs/QmSVca9SjpxRGSQGMe2MmGDbw9uRCThDCzz8LPMQK4Nyo1"
+				"bzz-raw://13da533768885764228ffdfc87bbfa918bca5ecfe33b85e977c3204911aadc59",
+				"dweb:/ipfs/QmcRgJjjU12tahMVxvRpBZGS557LXfDVPwF92AzCXkUmKR"
+			]
+		},
+		"RPSLS.sol": {
+			"keccak256": "0x1762273c659966c09bbb1bb1f7dca3c21c13705eb51d86066bf73de92bee43ca",
+			"license": "GPL-3.0",
+			"urls": [
+				"bzz-raw://2177984d4b7c81c20de3929052f4ad414243df09ec03840e8d1567e11d653b8e",
+				"dweb:/ipfs/QmbtkWxkTLFXqafgRfaeM8dQw8ytK3gKbyuGC3UA3Yd8J2"
 			]
 		},
 		"TimeUnit.sol": {
-			"keccak256": "0x1223ba238973fdd9c9f8a260e4f455d78b1dd4fcb9b4ecb049d31a2aa0bcd568",
+			"keccak256": "0x837a2d81aedef52a1f42d6235ebe8af97b9b9779f28edfff4c70266321591f88",
 			"license": "GPL-3.0",
 			"urls": [
-				"bzz-raw://bcc685b07b57f3bcfee2a048a03a694c6a900e6fed42412592d81bd0bb3855da",
-				"dweb:/ipfs/QmatcAvVaZJzCn7fu2BUHnBfYkXZ7zwoNxnKKsPDRp4Asw"
+				"bzz-raw://0d75bedde7f93b05624353ead30bc7c7864a52d447ec464a46d38cda2c2fabe5",
+				"dweb:/ipfs/QmXNNn4DrMjKNNdppMdX553GwBhGbobnEnBwfyXBtpZ4RT"
 			]
 		}
 	},

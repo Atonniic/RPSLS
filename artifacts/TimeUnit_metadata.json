@@ -7,7 +7,7 @@
 		"abi": [
 			{
 				"inputs": [],
-				"name": "elapsedMinutes",
+				"name": "delayTime",
 				"outputs": [
 					{
 						"internalType": "uint256",
@@ -33,14 +33,20 @@
 			},
 			{
 				"inputs": [],
-				"name": "setStartTime",
-				"outputs": [],
-				"stateMutability": "nonpayable",
+				"name": "isTimeout",
+				"outputs": [
+					{
+						"internalType": "bool",
+						"name": "",
+						"type": "bool"
+					}
+				],
+				"stateMutability": "view",
 				"type": "function"
 			},
 			{
 				"inputs": [],
-				"name": "startTime",
+				"name": "latestActionTime",
 				"outputs": [
 					{
 						"internalType": "uint256",
@@ -80,11 +86,11 @@
 	},
 	"sources": {
 		"TimeUnit.sol": {
-			"keccak256": "0x2955fc26f1f6d0fd25d553de29a46ef1bd9eac69f811b609b46b8d53f0b24dcc",
+			"keccak256": "0x837a2d81aedef52a1f42d6235ebe8af97b9b9779f28edfff4c70266321591f88",
 			"license": "GPL-3.0",
 			"urls": [
-				"bzz-raw://7cc9b08d810d9c585d834cfd13f7de504aeb32a121972c58486df71514e7229f",
-				"dweb:/ipfs/Qmaer8hTSWovbfPphPqmqkpstTc6Sgjdzavudo3KS3zo1Y"
+				"bzz-raw://0d75bedde7f93b05624353ead30bc7c7864a52d447ec464a46d38cda2c2fabe5",
+				"dweb:/ipfs/QmXNNn4DrMjKNNdppMdX553GwBhGbobnEnBwfyXBtpZ4RT"
 			]
 		}
 	},

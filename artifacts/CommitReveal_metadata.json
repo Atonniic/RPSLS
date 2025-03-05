@@ -17,42 +17,17 @@
 					{
 						"indexed": false,
 						"internalType": "bytes32",
-						"name": "dataHash",
-						"type": "bytes32"
-					},
-					{
-						"indexed": false,
-						"internalType": "uint64",
-						"name": "block",
-						"type": "uint64"
-					}
-				],
-				"name": "CommitHash",
-				"type": "event"
-			},
-			{
-				"anonymous": false,
-				"inputs": [
-					{
-						"indexed": false,
-						"internalType": "address",
-						"name": "sender",
-						"type": "address"
-					},
-					{
-						"indexed": false,
-						"internalType": "bytes32",
-						"name": "revealHash",
+						"name": "commit",
 						"type": "bytes32"
 					},
 					{
 						"indexed": false,
 						"internalType": "uint256",
-						"name": "random",
+						"name": "block",
 						"type": "uint256"
 					}
 				],
-				"name": "RevealHash",
+				"name": "CommitHash",
 				"type": "event"
 			},
 			{
@@ -80,13 +55,13 @@
 				"outputs": [
 					{
 						"internalType": "bytes32",
-						"name": "commit",
+						"name": "commitHash",
 						"type": "bytes32"
 					},
 					{
-						"internalType": "uint64",
-						"name": "block",
-						"type": "uint64"
+						"internalType": "uint256",
+						"name": "blockNumber",
+						"type": "uint256"
 					},
 					{
 						"internalType": "bool",
@@ -100,45 +75,24 @@
 			{
 				"inputs": [
 					{
-						"internalType": "bytes32",
-						"name": "data",
-						"type": "bytes32"
-					}
-				],
-				"name": "getHash",
-				"outputs": [
+						"internalType": "string",
+						"name": "randomSalt",
+						"type": "string"
+					},
 					{
-						"internalType": "bytes32",
-						"name": "",
-						"type": "bytes32"
-					}
-				],
-				"stateMutability": "pure",
-				"type": "function"
-			},
-			{
-				"inputs": [],
-				"name": "max",
-				"outputs": [
-					{
-						"internalType": "uint8",
-						"name": "",
-						"type": "uint8"
-					}
-				],
-				"stateMutability": "view",
-				"type": "function"
-			},
-			{
-				"inputs": [
-					{
-						"internalType": "bytes32",
-						"name": "revealHash",
-						"type": "bytes32"
+						"internalType": "uint256",
+						"name": "choice",
+						"type": "uint256"
 					}
 				],
 				"name": "reveal",
-				"outputs": [],
+				"outputs": [
+					{
+						"internalType": "bool",
+						"name": "",
+						"type": "bool"
+					}
+				],
 				"stateMutability": "nonpayable",
 				"type": "function"
 			}
@@ -171,11 +125,11 @@
 	},
 	"sources": {
 		"CommitReveal.sol": {
-			"keccak256": "0xa7c55dbe55645df2ccfbe45a8c728f2274739a03425593f0fa2b0059a0ec67bb",
+			"keccak256": "0x6d742bd6d3bf5d76710186386b55cfa32036b6f21ec5eae9269bacced35ee89f",
 			"license": "GPL-3.0",
 			"urls": [
-				"bzz-raw://afd85eb278be449665f41afecbc16ed6be2bc4551bf97042c650fca796f022e3",
-				"dweb:/ipfs/QmYxNVJ5nYu5c9eq31z3H7ydKdSbgWLa6yQynkEA1zzbou"
+				"bzz-raw://13da533768885764228ffdfc87bbfa918bca5ecfe33b85e977c3204911aadc59",
+				"dweb:/ipfs/QmcRgJjjU12tahMVxvRpBZGS557LXfDVPwF92AzCXkUmKR"
 			]
 		}
 	},
