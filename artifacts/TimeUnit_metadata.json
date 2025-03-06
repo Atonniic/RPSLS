@@ -20,20 +20,7 @@
 			},
 			{
 				"inputs": [],
-				"name": "elapsedSeconds",
-				"outputs": [
-					{
-						"internalType": "uint256",
-						"name": "",
-						"type": "uint256"
-					}
-				],
-				"stateMutability": "view",
-				"type": "function"
-			},
-			{
-				"inputs": [],
-				"name": "isTimeout",
+				"name": "isTimeExceeded",
 				"outputs": [
 					{
 						"internalType": "bool",
@@ -55,6 +42,13 @@
 					}
 				],
 				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "updateActionTime",
+				"outputs": [],
+				"stateMutability": "nonpayable",
 				"type": "function"
 			}
 		],
@@ -86,11 +80,11 @@
 	},
 	"sources": {
 		"TimeUnit.sol": {
-			"keccak256": "0x837a2d81aedef52a1f42d6235ebe8af97b9b9779f28edfff4c70266321591f88",
+			"keccak256": "0x6d315f15a429a2db1f6037036048976f77e1d57986dfdedb9df31319e6053ed7",
 			"license": "GPL-3.0",
 			"urls": [
-				"bzz-raw://0d75bedde7f93b05624353ead30bc7c7864a52d447ec464a46d38cda2c2fabe5",
-				"dweb:/ipfs/QmXNNn4DrMjKNNdppMdX553GwBhGbobnEnBwfyXBtpZ4RT"
+				"bzz-raw://9e0620dd352aca96df8e2c4537722f36e95407922cf039e86fb6636486eade82",
+				"dweb:/ipfs/QmY9psx7StLY37KHBAJ3muDxVJqG1gGy5SbCBXVnCiNMgz"
 			]
 		}
 	},

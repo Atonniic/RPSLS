@@ -17,17 +17,42 @@
 					{
 						"indexed": false,
 						"internalType": "bytes32",
-						"name": "commit",
+						"name": "dataHash",
+						"type": "bytes32"
+					},
+					{
+						"indexed": false,
+						"internalType": "uint64",
+						"name": "block",
+						"type": "uint64"
+					}
+				],
+				"name": "CommitHash",
+				"type": "event"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": false,
+						"internalType": "address",
+						"name": "sender",
+						"type": "address"
+					},
+					{
+						"indexed": false,
+						"internalType": "bytes32",
+						"name": "revealHash",
 						"type": "bytes32"
 					},
 					{
 						"indexed": false,
 						"internalType": "uint256",
-						"name": "block",
+						"name": "random",
 						"type": "uint256"
 					}
 				],
-				"name": "CommitHash",
+				"name": "RevealHash",
 				"type": "event"
 			},
 			{
@@ -36,6 +61,11 @@
 						"internalType": "bytes32",
 						"name": "dataHash",
 						"type": "bytes32"
+					},
+					{
+						"internalType": "address",
+						"name": "sender",
+						"type": "address"
 					}
 				],
 				"name": "commit",
@@ -55,17 +85,22 @@
 				"outputs": [
 					{
 						"internalType": "bytes32",
-						"name": "commitHash",
+						"name": "commit",
 						"type": "bytes32"
 					},
 					{
-						"internalType": "uint256",
-						"name": "blockNumber",
-						"type": "uint256"
+						"internalType": "uint64",
+						"name": "block",
+						"type": "uint64"
 					},
 					{
 						"internalType": "bool",
 						"name": "revealed",
+						"type": "bool"
+					},
+					{
+						"internalType": "bool",
+						"name": "commited",
 						"type": "bool"
 					}
 				],
@@ -75,24 +110,74 @@
 			{
 				"inputs": [
 					{
-						"internalType": "string",
-						"name": "randomSalt",
-						"type": "string"
-					},
-					{
-						"internalType": "uint256",
-						"name": "choice",
-						"type": "uint256"
+						"internalType": "address",
+						"name": "sender",
+						"type": "address"
 					}
 				],
-				"name": "reveal",
+				"name": "getCommit",
 				"outputs": [
+					{
+						"internalType": "bytes32",
+						"name": "",
+						"type": "bytes32"
+					},
 					{
 						"internalType": "bool",
 						"name": "",
 						"type": "bool"
 					}
 				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "bytes32",
+						"name": "data",
+						"type": "bytes32"
+					}
+				],
+				"name": "getHash",
+				"outputs": [
+					{
+						"internalType": "bytes32",
+						"name": "",
+						"type": "bytes32"
+					}
+				],
+				"stateMutability": "pure",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "max",
+				"outputs": [
+					{
+						"internalType": "uint8",
+						"name": "",
+						"type": "uint8"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "bytes32",
+						"name": "revealHash",
+						"type": "bytes32"
+					},
+					{
+						"internalType": "address",
+						"name": "sender",
+						"type": "address"
+					}
+				],
+				"name": "reveal",
+				"outputs": [],
 				"stateMutability": "nonpayable",
 				"type": "function"
 			}
@@ -125,11 +210,11 @@
 	},
 	"sources": {
 		"CommitReveal.sol": {
-			"keccak256": "0x6d742bd6d3bf5d76710186386b55cfa32036b6f21ec5eae9269bacced35ee89f",
+			"keccak256": "0x055e663dbbe5f3a0ec0f30cb317bde3fbd563c4fde2e7871ac9c3b90539a369d",
 			"license": "GPL-3.0",
 			"urls": [
-				"bzz-raw://13da533768885764228ffdfc87bbfa918bca5ecfe33b85e977c3204911aadc59",
-				"dweb:/ipfs/QmcRgJjjU12tahMVxvRpBZGS557LXfDVPwF92AzCXkUmKR"
+				"bzz-raw://60adfe48b11e11dae308ad5d0726120623ff389b9d339caee41807284dccfce7",
+				"dweb:/ipfs/QmVQjwp71QuKoQL36qcvQGUsJnrA4gLkvbrorLEHbLW41a"
 			]
 		}
 	},

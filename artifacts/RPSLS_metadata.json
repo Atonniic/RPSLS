@@ -6,15 +6,47 @@
 	"output": {
 		"abi": [
 			{
+				"inputs": [],
+				"stateMutability": "nonpayable",
+				"type": "constructor"
+			},
+			{
+				"anonymous": false,
+				"inputs": [],
+				"name": "GameReset",
+				"type": "event"
+			},
+			{
+				"anonymous": false,
 				"inputs": [
 					{
+						"indexed": true,
 						"internalType": "address",
-						"name": "_commitContract",
+						"name": "player",
 						"type": "address"
 					}
 				],
-				"stateMutability": "nonpayable",
-				"type": "constructor"
+				"name": "PlayerAdded",
+				"type": "event"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": true,
+						"internalType": "address",
+						"name": "winner",
+						"type": "address"
+					},
+					{
+						"indexed": false,
+						"internalType": "uint256",
+						"name": "amount",
+						"type": "uint256"
+					}
+				],
+				"name": "Winner",
+				"type": "event"
 			},
 			{
 				"inputs": [],
@@ -24,21 +56,8 @@
 				"type": "function"
 			},
 			{
-				"inputs": [
-					{
-						"internalType": "bytes32",
-						"name": "dataHash",
-						"type": "bytes32"
-					}
-				],
-				"name": "commit",
-				"outputs": [],
-				"stateMutability": "nonpayable",
-				"type": "function"
-			},
-			{
 				"inputs": [],
-				"name": "commitContract",
+				"name": "commitReveal",
 				"outputs": [
 					{
 						"internalType": "contract CommitReveal",
@@ -50,60 +69,40 @@
 				"type": "function"
 			},
 			{
-				"inputs": [],
-				"name": "delayTime",
-				"outputs": [
+				"inputs": [
 					{
-						"internalType": "uint256",
-						"name": "",
-						"type": "uint256"
+						"internalType": "bytes32",
+						"name": "revealHash",
+						"type": "bytes32"
 					}
 				],
-				"stateMutability": "view",
+				"name": "getChoiceFromHash",
+				"outputs": [
+					{
+						"internalType": "uint8",
+						"name": "",
+						"type": "uint8"
+					}
+				],
+				"stateMutability": "pure",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "bytes32",
+						"name": "commitHash",
+						"type": "bytes32"
+					}
+				],
+				"name": "inputCommit",
+				"outputs": [],
+				"stateMutability": "nonpayable",
 				"type": "function"
 			},
 			{
 				"inputs": [],
-				"name": "elapsedSeconds",
-				"outputs": [
-					{
-						"internalType": "uint256",
-						"name": "",
-						"type": "uint256"
-					}
-				],
-				"stateMutability": "view",
-				"type": "function"
-			},
-			{
-				"inputs": [],
-				"name": "isTimeout",
-				"outputs": [
-					{
-						"internalType": "bool",
-						"name": "",
-						"type": "bool"
-					}
-				],
-				"stateMutability": "view",
-				"type": "function"
-			},
-			{
-				"inputs": [],
-				"name": "latestActionTime",
-				"outputs": [
-					{
-						"internalType": "uint256",
-						"name": "",
-						"type": "uint256"
-					}
-				],
-				"stateMutability": "view",
-				"type": "function"
-			},
-			{
-				"inputs": [],
-				"name": "numInput",
+				"name": "numCommits",
 				"outputs": [
 					{
 						"internalType": "uint256",
@@ -128,14 +127,8 @@
 				"type": "function"
 			},
 			{
-				"inputs": [
-					{
-						"internalType": "address",
-						"name": "",
-						"type": "address"
-					}
-				],
-				"name": "player_choice",
+				"inputs": [],
+				"name": "numReveals",
 				"outputs": [
 					{
 						"internalType": "uint256",
@@ -154,12 +147,12 @@
 						"type": "address"
 					}
 				],
-				"name": "player_not_played",
+				"name": "player_choice",
 				"outputs": [
 					{
-						"internalType": "bool",
+						"internalType": "uint256",
 						"name": "",
-						"type": "bool"
+						"type": "uint256"
 					}
 				],
 				"stateMutability": "view",
@@ -194,17 +187,12 @@
 			{
 				"inputs": [
 					{
-						"internalType": "string",
-						"name": "randomSalt",
-						"type": "string"
-					},
-					{
-						"internalType": "uint256",
-						"name": "choice",
-						"type": "uint256"
+						"internalType": "bytes32",
+						"name": "revealHash",
+						"type": "bytes32"
 					}
 				],
-				"name": "reveal",
+				"name": "revealChoice",
 				"outputs": [],
 				"stateMutability": "nonpayable",
 				"type": "function"
@@ -217,6 +205,19 @@
 						"internalType": "uint256",
 						"name": "",
 						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "timeUnit",
+				"outputs": [
+					{
+						"internalType": "contract TimeUnit",
+						"name": "",
+						"type": "address"
 					}
 				],
 				"stateMutability": "view",
@@ -251,27 +252,27 @@
 	},
 	"sources": {
 		"CommitReveal.sol": {
-			"keccak256": "0x6d742bd6d3bf5d76710186386b55cfa32036b6f21ec5eae9269bacced35ee89f",
+			"keccak256": "0x055e663dbbe5f3a0ec0f30cb317bde3fbd563c4fde2e7871ac9c3b90539a369d",
 			"license": "GPL-3.0",
 			"urls": [
-				"bzz-raw://13da533768885764228ffdfc87bbfa918bca5ecfe33b85e977c3204911aadc59",
-				"dweb:/ipfs/QmcRgJjjU12tahMVxvRpBZGS557LXfDVPwF92AzCXkUmKR"
+				"bzz-raw://60adfe48b11e11dae308ad5d0726120623ff389b9d339caee41807284dccfce7",
+				"dweb:/ipfs/QmVQjwp71QuKoQL36qcvQGUsJnrA4gLkvbrorLEHbLW41a"
 			]
 		},
 		"RPSLS.sol": {
-			"keccak256": "0x1762273c659966c09bbb1bb1f7dca3c21c13705eb51d86066bf73de92bee43ca",
+			"keccak256": "0x7855cdc2aa8bbd212ee93eeecea67d43fdd6f6aa60cca178b83dc2dc8974fd44",
 			"license": "GPL-3.0",
 			"urls": [
-				"bzz-raw://2177984d4b7c81c20de3929052f4ad414243df09ec03840e8d1567e11d653b8e",
-				"dweb:/ipfs/QmbtkWxkTLFXqafgRfaeM8dQw8ytK3gKbyuGC3UA3Yd8J2"
+				"bzz-raw://b2c9f6065c4a880594193e742d4430a228f14c843c02a0e947b2f3a90e9c7fca",
+				"dweb:/ipfs/QmYiDLuihDudV2uP9LUEEDfk8SyQKLqJhCCbF3nwhTmdKa"
 			]
 		},
 		"TimeUnit.sol": {
-			"keccak256": "0x837a2d81aedef52a1f42d6235ebe8af97b9b9779f28edfff4c70266321591f88",
+			"keccak256": "0x6d315f15a429a2db1f6037036048976f77e1d57986dfdedb9df31319e6053ed7",
 			"license": "GPL-3.0",
 			"urls": [
-				"bzz-raw://0d75bedde7f93b05624353ead30bc7c7864a52d447ec464a46d38cda2c2fabe5",
-				"dweb:/ipfs/QmXNNn4DrMjKNNdppMdX553GwBhGbobnEnBwfyXBtpZ4RT"
+				"bzz-raw://9e0620dd352aca96df8e2c4537722f36e95407922cf039e86fb6636486eade82",
+				"dweb:/ipfs/QmY9psx7StLY37KHBAJ3muDxVJqG1gGy5SbCBXVnCiNMgz"
 			]
 		}
 	},

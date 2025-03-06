@@ -1,76 +1,86 @@
 // SPDX-License-Identifier: GPL-3.0
 pragma solidity >=0.7.0 <0.9.0;
 
-import "./TimeUnit.sol";
 import "./CommitReveal.sol";
+import "./TimeUnit.sol";
 
-contract RPSLS is TimeUnit {
-    CommitReveal public commitContract;
-    
+contract RPSLS{
+
+    CommitReveal public commitReveal;
+    TimeUnit public timeUnit;
+
     uint public numPlayer = 0;
     uint public reward = 0;
-    mapping(address => uint) public player_choice;
-    mapping(address => bool) public player_not_played;
+    mapping(address => uint) public player_choice; // 0 - Rock, 1 - Paper , 2 - Scissors, 3 - Lizard, 4 - Spock
     address[] public players;
-    uint public numInput = 0;
 
-    address[] private allowedAccounts = [
-        0x5B38Da6a701c568545dCfcB03FcB875f56beddC4,
-        0xAb8483F64d9C6d1EcF9b849Ae677dD3315835cb2,
-        0x4B20993Bc481177ec7E8f571ceCaE8A9e22C02db,
-        0x78731D3Ca6b7E34aC0F824c42a7cC18A495cabaB
-    ];
+    uint public numCommits = 0;
+    uint public numReveals = 0;
 
-    constructor(address _commitContract) {
-        commitContract = CommitReveal(_commitContract);
+    event PlayerAdded(address indexed player);
+    event Winner(address indexed winner, uint amount);
+    event GameReset();
+
+    constructor() {
+        commitReveal = new CommitReveal();
+        timeUnit = new TimeUnit();  
     }
 
+
     modifier onlyAllowedAccounts() {
-        bool isAllowed = false;
-        for (uint i = 0; i < allowedAccounts.length; i++) {
-            if (msg.sender == allowedAccounts[i]) {
-                isAllowed = true;
-                break;
-            }
-        }
-        require(isAllowed, "Not an allowed account.");
+        require(
+            msg.sender == 0x5B38Da6a701c568545dCfcB03FcB875f56beddC4 ||
+            msg.sender == 0xAb8483F64d9C6d1EcF9b849Ae677dD3315835cb2 ||
+            msg.sender == 0x4B20993Bc481177ec7E8f571ceCaE8A9e22C02db ||
+            msg.sender == 0x78731D3Ca6b7E34aC0F824c42a7cC18A495cabaB,
+            "Unauthorized account"
+        );
         _;
     }
 
     function addPlayer() public payable onlyAllowedAccounts {
         require(numPlayer < 2, "Already 2 players.");
         require(msg.value == 1 ether, "Must send 1 ETH.");
-        
+
         if (numPlayer > 0) {
-            require(msg.sender != players[0]);
+            require(msg.sender != players[0], "Player already added.");
         }
 
         reward += msg.value;
-        player_not_played[msg.sender] = true;
         players.push(msg.sender);
         numPlayer++;
 
-        updateActionTime();
+        timeUnit.updateActionTime();
+        emit PlayerAdded(msg.sender);
     }
 
-    function commit(bytes32 dataHash) public onlyAllowedAccounts {
-        require(player_not_played[msg.sender], "Not registered or already committed.");
-        commitContract.commit(dataHash);
+    function inputCommit(bytes32 commitHash) public {
+        require(numPlayer == 2, "Game is not ready.");
+
+        commitReveal.commit(commitHash, msg.sender);
+        numCommits++;
+
+        timeUnit.updateActionTime();
     }
 
-    function reveal(string memory randomSalt, uint choice) public onlyAllowedAccounts {
-        require(player_not_played[msg.sender], "Not registered or already revealed.");
-        require(commitContract.reveal(randomSalt, choice), "Invalid reveal.");
+    function revealChoice(bytes32 revealHash) public {
+        require(numCommits == 2, "Both players must commit before revealing.");
 
-        player_choice[msg.sender] = choice;
-        player_not_played[msg.sender] = false;
-        numInput++;
+        commitReveal.reveal(revealHash, msg.sender);
+        uint8 choiceFromHash = getChoiceFromHash(revealHash);
+        player_choice[msg.sender] = choiceFromHash;
+        numReveals++;
 
-        if (numInput == 2) {
+        if (numReveals == 2) {
             _checkWinnerAndPay();
         }
 
-        updateActionTime();
+        timeUnit.updateActionTime();
+    }
+
+    function getChoiceFromHash(bytes32 revealHash) public pure returns (uint8) {
+        uint8 choice = uint8(revealHash[revealHash.length - 1]) % 5;
+        return choice;
     }
 
     function _checkWinnerAndPay() private {
@@ -81,17 +91,23 @@ contract RPSLS is TimeUnit {
 
         if (_isWinner(p0Choice, p1Choice)) {
             account0.transfer(reward);
-        } else if (_isWinner(p1Choice, p0Choice)) {
+            emit Winner(account0, reward);
+        } 
+        else if (_isWinner(p1Choice, p0Choice)) {
             account1.transfer(reward);
-        } else {
+            emit Winner(account1, reward);
+        } 
+        else {
             account0.transfer(reward / 2);
             account1.transfer(reward / 2);
         }
+
+        _resetGame();
     }
 
     function _isWinner(uint choice1, uint choice2) private pure returns (bool) {
         return (
-            (choice1 == 0 && (choice2 == 2 || choice2 == 3)) ||
+            (choice1 == 0 && (choice2 == 2 || choice2 == 3)) || 
             (choice1 == 1 && (choice2 == 0 || choice2 == 4)) ||
             (choice1 == 2 && (choice2 == 1 || choice2 == 3)) ||
             (choice1 == 3 && (choice2 == 1 || choice2 == 4)) ||
@@ -99,17 +115,17 @@ contract RPSLS is TimeUnit {
         );
     }
 
-    function refund() public onlyAllowedAccounts {
-        require(numPlayer > 0, "No active game.");
-        require(reward > 0, "No reward available.");
+    function refund() public {
+        require(timeUnit.isTimeExceeded(), "Refund period not elapsed");
+        require(numPlayer > 0, "No active game");
 
         address payable account0 = payable(players[0]);
 
         if (numPlayer == 1) {
-            require(msg.sender == players[0], "Only player can refund.");
+            require(msg.sender == players[0], "Only player can refund");
             account0.transfer(reward);
-        } else if (numPlayer == 2) {
-            require(msg.sender == players[0] || msg.sender == players[1], "Only players can refund.");
+        } else {
+            require(msg.sender == players[0] || msg.sender == players[1], "Unauthorized refund");
             address payable account1 = payable(players[1]);
             account0.transfer(reward / 2);
             account1.transfer(reward / 2);
@@ -120,15 +136,16 @@ contract RPSLS is TimeUnit {
 
     function _resetGame() private {
         numPlayer = 0;
-        numInput = 0;
         reward = 0;
+        numCommits = 0;
+        numReveals = 0;
+        
+        emit GameReset();
 
         for (uint i = 0; i < players.length; i++) {
             delete player_choice[players[i]];
-            delete player_not_played[players[i]];
         }
 
         delete players;
-        updateActionTime();
     }
 }

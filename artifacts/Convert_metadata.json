@@ -25,19 +25,6 @@
 				"type": "function"
 			},
 			{
-				"inputs": [],
-				"name": "getAddress",
-				"outputs": [
-					{
-						"internalType": "address",
-						"name": "",
-						"type": "address"
-					}
-				],
-				"stateMutability": "view",
-				"type": "function"
-			},
-			{
 				"inputs": [
 					{
 						"internalType": "bytes32",
@@ -85,11 +72,11 @@
 	},
 	"sources": {
 		"Convert.sol": {
-			"keccak256": "0x2199db4e5d940abb1c231427b15ea27392493f02f324905b7edaf63e75a6009d",
+			"keccak256": "0x96099cfcc0c0e7a6764dbb20005b4ef539cc85ece0a8816cf75dd0a1960fef98",
 			"license": "GPL-3.0",
 			"urls": [
-				"bzz-raw://23722e4a3e4e13aa4192d3ca18747e2b49f5304c177bda788f9a60ec5f7d5fbb",
-				"dweb:/ipfs/QmbdZYKGeS2fWAVCvwwMiDQ11LeEJtZH35VF1qqiQfScwU"
+				"bzz-raw://9b1febb006bd43aebf76489662e435ef2c2176e883de9d3011fc511fb5f76ae6",
+				"dweb:/ipfs/QmTAaZ2QxrvRAuhKvuomxvfqmJVGymYtKJjKKyGWh2U1be"
 			]
 		}
 	},
