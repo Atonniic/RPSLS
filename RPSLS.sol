@@ -3,63 +3,62 @@ pragma solidity >=0.7.0 <0.9.0;
 
 import "./CommitReveal.sol";
 import "./TimeUnit.sol";
+import "./IERC20.sol";
 
-contract RPSLS{
-
+contract RPSLS {
     CommitReveal public commitReveal;
     TimeUnit public timeUnit;
+    IERC20 public token;
 
     uint public numPlayer = 0;
     uint public reward = 0;
     mapping(address => uint) public player_choice; // 0 - Rock, 1 - Paper , 2 - Scissors, 3 - Lizard, 4 - Spock
     address[] public players;
-
     uint public numCommits = 0;
     uint public numReveals = 0;
-
+    uint public constant BET_AMOUNT = 0.000001 ether;
+    
     event PlayerAdded(address indexed player);
     event Winner(address indexed winner, uint amount);
     event GameReset();
+    event Forfeit(address indexed winner, uint amount);
 
-    constructor() {
+    constructor(address _token) {
         commitReveal = new CommitReveal();
         timeUnit = new TimeUnit();  
+        token = IERC20(_token);
     }
 
-
-    modifier onlyAllowedAccounts() {
-        require(
-            msg.sender == 0x5B38Da6a701c568545dCfcB03FcB875f56beddC4 ||
-            msg.sender == 0xAb8483F64d9C6d1EcF9b849Ae677dD3315835cb2 ||
-            msg.sender == 0x4B20993Bc481177ec7E8f571ceCaE8A9e22C02db ||
-            msg.sender == 0x78731D3Ca6b7E34aC0F824c42a7cC18A495cabaB,
-            "Unauthorized account"
-        );
-        _;
-    }
-
-    function addPlayer() public payable onlyAllowedAccounts {
+    function addPlayer() public {
         require(numPlayer < 2, "Already 2 players.");
-        require(msg.value == 1 ether, "Must send 1 ETH.");
+        require(token.allowance(msg.sender, address(this)) >= BET_AMOUNT, "Insufficient allowance.");
 
         if (numPlayer > 0) {
             require(msg.sender != players[0], "Player already added.");
         }
 
-        reward += msg.value;
         players.push(msg.sender);
         numPlayer++;
 
-        timeUnit.updateActionTime();
         emit PlayerAdded(msg.sender);
     }
 
     function inputCommit(bytes32 commitHash) public {
         require(numPlayer == 2, "Game is not ready.");
+        require(token.allowance(players[0], address(this)) >= BET_AMOUNT, "Player 1 hasn't approved the bet.");
+        require(token.allowance(players[1], address(this)) >= BET_AMOUNT, "Player 2 hasn't approved the bet.");
+        require(numCommits < 2, "Already committed.");
 
         commitReveal.commit(commitHash, msg.sender);
         numCommits++;
 
+        if (numCommits == 2) {
+            // Transfer funds from both players
+            require(token.transferFrom(players[0], address(this), BET_AMOUNT), "Player 1 bet failed.");
+            require(token.transferFrom(players[1], address(this), BET_AMOUNT), "Player 2 bet failed.");
+            reward = BET_AMOUNT * 2;
+        }
+        
         timeUnit.updateActionTime();
     }
 
@@ -74,13 +73,12 @@ contract RPSLS{
         if (numReveals == 2) {
             _checkWinnerAndPay();
         }
-
+        
         timeUnit.updateActionTime();
     }
 
     function getChoiceFromHash(bytes32 revealHash) public pure returns (uint8) {
-        uint8 choice = uint8(revealHash[revealHash.length - 1]) % 5;
-        return choice;
+        return uint8(revealHash[revealHash.length - 1]) % 5;
     }
 
     function _checkWinnerAndPay() private {
@@ -90,16 +88,14 @@ contract RPSLS{
         address payable account1 = payable(players[1]);
 
         if (_isWinner(p0Choice, p1Choice)) {
-            account0.transfer(reward);
+            token.transfer(account0, reward);
             emit Winner(account0, reward);
-        } 
-        else if (_isWinner(p1Choice, p0Choice)) {
-            account1.transfer(reward);
+        } else if (_isWinner(p1Choice, p0Choice)) {
+            token.transfer(account1, reward);
             emit Winner(account1, reward);
-        } 
-        else {
-            account0.transfer(reward / 2);
-            account1.transfer(reward / 2);
+        } else {
+            token.transfer(account0, reward / 2);
+            token.transfer(account1, reward / 2);
         }
 
         _resetGame();
@@ -115,22 +111,19 @@ contract RPSLS{
         );
     }
 
-    function refund() public {
-        require(timeUnit.isTimeExceeded(), "Refund period not elapsed");
-        require(numPlayer > 0, "No active game");
+    function claimForfeit() public {
+        require(timeUnit.isTimeExceeded(), "Reveal period not elapsed");
+        require(numReveals < 2, "Game already revealed");
 
-        address payable account0 = payable(players[0]);
-
-        if (numPlayer == 1) {
-            require(msg.sender == players[0], "Only player can refund");
-            account0.transfer(reward);
+        address winner;
+        if (numReveals == 1) {
+            winner = (player_choice[players[0]] != 0) ? players[0] : players[1];
         } else {
-            require(msg.sender == players[0] || msg.sender == players[1], "Unauthorized refund");
-            address payable account1 = payable(players[1]);
-            account0.transfer(reward / 2);
-            account1.transfer(reward / 2);
+            winner = msg.sender;
         }
 
+        token.transfer(winner, reward);
+        emit Forfeit(winner, reward);
         _resetGame();
     }
 

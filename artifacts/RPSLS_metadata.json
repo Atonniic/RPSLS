@@ -6,7 +6,13 @@
 	"output": {
 		"abi": [
 			{
-				"inputs": [],
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "_wavax",
+						"type": "address"
+					}
+				],
 				"stateMutability": "nonpayable",
 				"type": "constructor"
 			},
@@ -50,9 +56,22 @@
 			},
 			{
 				"inputs": [],
+				"name": "WAVAX",
+				"outputs": [
+					{
+						"internalType": "contract IERC20",
+						"name": "",
+						"type": "address"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
 				"name": "addPlayer",
 				"outputs": [],
-				"stateMutability": "payable",
+				"stateMutability": "nonpayable",
 				"type": "function"
 			},
 			{
@@ -251,6 +270,14 @@
 		"remappings": []
 	},
 	"sources": {
+		"@openzeppelin/contracts/token/ERC20/IERC20.sol": {
+			"keccak256": "0xe06a3f08a987af6ad2e1c1e774405d4fe08f1694b67517438b467cecf0da0ef7",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://df6f0c459663c9858b6cba2cda1d14a7d05a985bed6d2de72bd8e78c25ee79db",
+				"dweb:/ipfs/QmeTTxZ7qVk9rjEv2R4CpCwdf8UMCcRqDNMvzNxHc3Fnn9"
+			]
+		},
 		"CommitReveal.sol": {
 			"keccak256": "0x055e663dbbe5f3a0ec0f30cb317bde3fbd563c4fde2e7871ac9c3b90539a369d",
 			"license": "GPL-3.0",
@@ -260,11 +287,11 @@
 			]
 		},
 		"RPSLS.sol": {
-			"keccak256": "0x7855cdc2aa8bbd212ee93eeecea67d43fdd6f6aa60cca178b83dc2dc8974fd44",
+			"keccak256": "0xc6da4feb71d817c924d70cf54a840e065678c6a76ff6b7294a407d86310a0aea",
 			"license": "GPL-3.0",
 			"urls": [
-				"bzz-raw://b2c9f6065c4a880594193e742d4430a228f14c843c02a0e947b2f3a90e9c7fca",
-				"dweb:/ipfs/QmYiDLuihDudV2uP9LUEEDfk8SyQKLqJhCCbF3nwhTmdKa"
+				"bzz-raw://e58f979216cc35e4c9651d31caa111acced02c637391d148d6bd4e1248764931",
+				"dweb:/ipfs/QmfEwpYubvtm7dsiTvCvbUHrX1FK741kmNvfhvwtSRDfDc"
 			]
 		},
 		"TimeUnit.sol": {
